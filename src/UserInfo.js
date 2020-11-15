@@ -1,23 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import getUserInfo from "./services/keycloak/getUserInfo";
 
 class UserInfo extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
-      id: ""
+      id: "",
     };
-    this.props.keycloak.loadUserInfo().then(userInfo => {
-        this.setState({name: userInfo.name, email: userInfo.email, id: userInfo.sub})
+  }
+  componentDidMount() {
+    getUserInfo(this.props.keycloak).then((userInfo) => {
+      this.setState({ ...userInfo });
     });
   }
 
   render() {
     return (
       <div className="UserInfo">
-        <p>Name: {this.state.name}</p>
+        <p>Firstname: {this.state.firstName}</p>
+        <p>Lastname: {this.state.lastName}</p>
         <p>Email: {this.state.email}</p>
         <p>ID: {this.state.id}</p>
       </div>

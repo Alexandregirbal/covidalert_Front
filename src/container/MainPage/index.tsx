@@ -1,26 +1,16 @@
+import React, { useState, useEffect } from "react";
+import Header from "../../component/header";
+import Secured from "../../Secured";
 
-
-import React, { useState, useEffect } from 'react';
-import Header from '../../component/header';
-import Secured from '../../Secured';
-
-
-interface Props {
-
-
-}
+interface Props {}
 
 const MainPage = (props: Props) => {
-
-  
-return (
-<>
-    <Header/>
-    <Secured></Secured> 
-</>
-)
-
-
-}
+  return (
+    <>
+      <Header title="Covid Alert front end" />
+      <Secured></Secured>
+    </>
+  );
+};
 
 export default MainPage;
