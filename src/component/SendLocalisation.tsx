@@ -55,7 +55,7 @@ const SendLocalisation = (props : Props) => {
         console.log("Latitude: " + position.coords.latitude +
         "<br>Longitude: " + position.coords.longitude)
         let result: any;
-        result = httpCall("POST","http://localhost:5000/covidalert/api/", {emailUser: email ,latitude : position.coords.latitude, longitude: position.coords.longitude,timestamp: Date.now() }, keycloak.token,result );
+        result = httpCall("POST","http://localhost:8090/api/locations/send", {emailUser: email ,latitude : position.coords.latitude, longitude: position.coords.longitude,timestamp: Date.now() }, keycloak.token,result );
         if(result.status === 200){
             console.log("localisation send");
         }
