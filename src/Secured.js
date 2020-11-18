@@ -3,7 +3,7 @@ import Keycloak from "keycloak-js";
 import UserInfo from "./UserInfo";
 import Logout from "./Logout";
 import QueryAPI from "./services/QueryApi";
-import SendLocalisation from "./component/SendLocalisation"
+import SendLocalisation from "./component/SendLocalisation";
 
 class Secured extends Component {
   constructor(props) {
@@ -18,12 +18,9 @@ class Secured extends Component {
     });
   }
 
- 
-
   render() {
     if (this.state.keycloak) {
       if (this.state.authenticated)
-
         return (
           <>
             <div style={{ marginLeft: 30, marginBottom: 50 }}>
@@ -35,19 +32,15 @@ class Secured extends Component {
             <div>
               <ul>
                 <QueryAPI
-                  description="send your localisation"
-                  buttonDescription="Send localisation"
-                  keycloak={this.state.keycloak}
-                  uri="http://localhost:5000/covidalert/api/"
-                />
-
-                <QueryAPI
                   description="declare yourself covided #RIP"
                   buttonDescription="Send alert"
                   keycloak={this.state.keycloak}
                 />
                 <Logout description="logout" keycloak={this.state.keycloak} />
-                <SendLocalisation authenticated={this.state.authenticated} keycloak={this.state.keycloak}/>
+                <SendLocalisation
+                  authenticated={this.state.authenticated}
+                  keycloak={this.state.keycloak}
+                />
               </ul>
             </div>
           </>

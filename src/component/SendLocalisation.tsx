@@ -3,70 +3,70 @@ import React, { useState, useEffect } from "react";
 import httpCall from "../services/api/httpcall";
 import getUserInfo from "../services/keycloak/getUserInfo";
 
-
 interface Props {
-    authentificated: string;
-    keycloak: any;
-  }
-
-const SendLocalisation = (props : Props) => {
-    const [response, setResponse] = useState(null);
-
-    const {
-        authentificated,
-        keycloak
-    } = props
-
-    useEffect(() => {
-        console.log("use effect")
-        const interval = setInterval(() => {
-            getLocation()
-        }, 10000);
-        return () => clearInterval(interval);
-      }, []);
-
-     const authorizationHeader = () => {
-        if (!keycloak) return {};
-        return {
-          headers: {
-            Authorization: "Bearer " + keycloak.token,
-          },
-        };
-      }
-
-      
-
-    const getLocation = () =>{
-        console.log("getLocalisation")
-    if (navigator.geolocation) {
-        const localisation =navigator.geolocation.getCurrentPosition(sendPosition);
-        console.log("loca" + localisation)
-    } else {
-        console.log("Geolocation is not supported by this browser.")
-    }
-    }
-
-    const sendPosition = (position : any) => {
-        
-        const email = getUserInfo(keycloak).then((userInfo) => {
-            return userInfo.email;
-        });
-          
-        console.log("Latitude: " + position.coords.latitude +
-        "<br>Longitude: " + position.coords.longitude)
-        let result: any;
-        result = httpCall("POST","http://localhost:8090/api/locations/send", {emailUser: email ,latitude : position.coords.latitude, longitude: position.coords.longitude,timestamp: Date.now() }, keycloak.token,result );
-        if(result.status === 200){
-            console.log("localisation send");
-        }
-        else {
-            console.log(result.status)
-        }
-    }
-    return (
-        <>
-        </>
-    );
+  authentificated: string;
+  keycloak: any;
 }
 
-export default SendLocalisation
+const SendLocalisation = (props: Props) => {
+  const [response, setResponse] = useState(null);
+
+  const { authentificated, keycloak } = props;
+
+  useEffect(() => {
+    console.log("use effect");
+    const interval = setInterval(() => {
+      getLocation();
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const authorizationHeader = () => {
+    if (!keycloak) return {};
+    return {
+      headers: {
+        Authorization: "Bearer " + keycloak.token,
+      },
+    };
+  };
+
+  const getLocation = () => {
+    console.log("getLocalisation");
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(sendPosition);
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  };
+
+  const sendPosition = async (position: any) => {
+    const email = await getUserInfo(keycloak).then((userInfo) => {
+      return userInfo?.email;
+    });
+
+    console.log({
+      userEmail: email,
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+      timestamp: Math.trunc(Date.now() / 1000),
+    });
+    let result: any;
+    httpCall(
+      "POST",
+      "http://localhost:8090/api/locations/send",
+      {
+        userEmail: email,
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        timestamp: Math.trunc(Date.now() / 1000),
+      },
+      keycloak.token,
+      (result) => {
+        console.log("ALEX: sendPosition -> result", result);
+      }
+    );
+  };
+  return <></>;
+};
+
+export default SendLocalisation;
