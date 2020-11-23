@@ -1,15 +1,15 @@
-import { report, resourceUsage } from "process";
-import React, { useState, useEffect } from "react";
-import httpCall from "../services/api/httpcall";
+import React, { useEffect, useState } from "react";
+import httpCall, { httpCallWithoutStringify } from "../services/api/httpcall";
 import getUserInfo from "../services/keycloak/getUserInfo";
 
 interface Props {
   authentificated: string;
   keycloak: any;
+  userInfo: { firstName: string; lastName: string; email: string; id: any };
 }
 
 const SendLocalisation = (props: Props) => {
-  const [response, setResponse] = useState(null);
+  const [email, setEmail] = useState("");
 
   const { authentificated, keycloak } = props;
 
@@ -35,38 +35,56 @@ const SendLocalisation = (props: Props) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(sendPosition);
     } else {
-      console.log("Geolocation is not supported by this browser.");
+      console.error("Geolocation is not supported by this browser.");
     }
+  };
+  const declareCovid = async () => {
+    httpCallWithoutStringify(
+      "POST",
+      "http://localhost:8090/api/covid/declaration",
+      email,
+      keycloak.token,
+      (result) => {
+        console.log("ALEX: getLocation -> result", result);
+      }
+    );
   };
 
   const sendPosition = async (position: any) => {
+    console.log("Trying to send position");
     const email = await getUserInfo(keycloak).then((userInfo) => {
       return userInfo?.email;
     });
-
-    console.log({
+    setEmail(email);
+    if (!email) return;
+    const body = {
       userEmail: email,
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
       timestamp: Math.trunc(Date.now() / 1000),
-    });
+    };
+    console.log(body);
     let result: any;
     httpCall(
       "POST",
       "http://localhost:8090/api/locations/send",
-      {
-        userEmail: email,
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        timestamp: Math.trunc(Date.now() / 1000),
-      },
+      body,
       keycloak.token,
       (result) => {
         console.log("ALEX: sendPosition -> result", result);
       }
     );
   };
-  return <></>;
+  return (
+    <li className="QueryAPI">
+      <p>
+        {`Click this button to declare yourself covid+: `}
+        <button style={{}} onClick={declareCovid}>
+          Declare Covid+
+        </button>
+      </p>
+    </li>
+  );
 };
 
 export default SendLocalisation;
