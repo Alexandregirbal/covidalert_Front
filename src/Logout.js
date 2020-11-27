@@ -9,12 +9,11 @@ class Logout extends Component {
 
   render() {
     return (
-      <li>
+      
         <p>
-          {`Click this button to ${this.props.description}: `}
           <button onClick={() => this.logout()}>Logout</button>
         </p>
-      </li>
+      
     );
   }
 }

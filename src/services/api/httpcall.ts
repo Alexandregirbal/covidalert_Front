@@ -14,6 +14,8 @@ const httpCall = (
   if (data != null) {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + token);
+    console.log(data);
+    console.log(JSON.stringify(data))
     xhr.send(JSON.stringify(data));
   } else xhr.send();
 };
@@ -36,5 +38,6 @@ export const httpCallWithoutStringify = (
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + token);
     xhr.send(data);
+    
   } else xhr.send();
 };
