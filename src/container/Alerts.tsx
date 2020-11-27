@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getEmail } from "../getEmail";
-import { httpCallWithoutStringify } from "../services/api/httpcall";
+import httpCall, { httpCallWithoutStringify } from "../services/api/httpcall";
 
 interface Props {
   keycloak: any;
@@ -17,8 +17,8 @@ const Alerts = (props: Props) => {
 
     const getAlerts = async (keycloak: any) => {
         const email = await getEmail(keycloak);
-
-        httpCallWithoutStringify("GET", `http://localhost:8090/api/alert?userEmail=${email}`,null, keycloak.token, (result) => {
+        console.log("TOKEN " + sessionStorage.getItem("token"));
+        httpCall("GET", `http://localhost:8090/api/alert?userEmail=${email}`,null, sessionStorage.getItem("token"), (result) => {
             setAlert(result) 
         })
        

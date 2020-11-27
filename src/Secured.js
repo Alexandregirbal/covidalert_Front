@@ -16,7 +16,10 @@ class Secured extends Component {
   componentDidMount() {
     const keycloak = Keycloak("/keycloak.json");
     keycloak.init({ onLoad: "login-required" }).then((authenticated) => {
-      this.setState({ keycloak: keycloak, authenticated: authenticated });
+      this.setState({keycloak: keycloak, authenticated: authenticated });
+      sessionStorage.setItem("token", keycloak.token)
+      console.log(sessionStorage.getItem("token"))
+      
     });
   }
 

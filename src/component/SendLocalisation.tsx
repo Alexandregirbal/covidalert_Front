@@ -43,7 +43,7 @@ const SendLocalisation = (props: Props) => {
       "POST",
       "http://localhost:8090/api/covid/declaration",
       email,
-      keycloak.token,
+      sessionStorage.getItem("token"),
       (result) => {
         console.log("ALEX: getLocation -> result", result);
       }
@@ -69,7 +69,7 @@ const SendLocalisation = (props: Props) => {
       "POST",
       "http://localhost:8090/api/locations/send",
       body,
-      keycloak.token,
+      sessionStorage.getItem("token"),
       (result) => {
         console.log("ALEX: sendPosition -> result", result);
       }

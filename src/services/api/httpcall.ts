@@ -11,13 +11,19 @@ const httpCall = (
     xhr.onload = function () {
       callback(JSON.parse(this["responseText"]));
     };
-  if (data != null) {
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("Authorization", "Bearer " + token);
-    console.log(data);
-    console.log(JSON.stringify(data))
+  
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.setRequestHeader("Authorization", "Bearer " + token);
+  console.log(" ICI " + token)
+  console.log(xhr)
+  console.log(JSON.stringify(data))
+  if(data === null){
+    xhr.send()
+  }
+  else{
     xhr.send(JSON.stringify(data));
-  } else xhr.send();
+  }
+  
 };
 export default httpCall;
 
