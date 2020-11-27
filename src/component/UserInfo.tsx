@@ -46,13 +46,21 @@ const UserInfo = (props : Props) => {
     const getDataBaseUser = (email: String, firstName : String, lastName : String) => {
       const body = {email: email, first_name: firstName, last_name: lastName, birthday: "", phone_number: "", password: ""};
       console.log(body)
-      httpCall("POST", `http://localhost:8090/api/users`,body, sessionStorage.getItem("token"), (result) => {
+      const result = httpCall("GET", `http://localhost:8090/api/users/${email}`,null, sessionStorage.getItem("token"), (result) => {
+        setBirthday(result.birthday);
+        setPhoneNumber(result.phone_number)
+        return result
+      });
+      if(result != null){
+        httpCall("POST", `http://localhost:8090/api/users`,body, sessionStorage.getItem("token"), (result) => {
         console.log("USER : ", result)
-    })
+      })
+      }
+      
     }
 
     const onClick = () => {
-      httpCall("POST", `http://localhost:8090/api/users`,{email: email, first_name: firstName, last_name: lastName, birthday: birthday, phone_number: phoneNumber, password: ""}, sessionStorage.getItem("token"), (result) => {
+      httpCall("PUT", `http://localhost:8090/api/users/${email}`,{email: email, first_name: firstName, last_name: lastName, birthday: birthday, phone_number: phoneNumber, password: null}, sessionStorage.getItem("token"), (result) => {
         console.log("USER : ", result)
         // SET LES ATTRIBUTS EN + SI IL EN A
     })
