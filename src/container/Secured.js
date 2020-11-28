@@ -1,10 +1,9 @@
 import React, { Component, useEffect } from "react";
 import Keycloak from "keycloak-js";
-import UserInfo from "./component/UserInfo";
-import Logout from "./Logout";
-import QueryAPI from "./services/QueryApi";
-import SendLocalisation from "./component/SendLocalisation";
-import Alerts from "./container/Alerts";
+import UserInfo from "../component/UserInfo";
+import Logout from "../component/Logout";
+import SendLocalisation from "../component/SendLocalisation";
+import Alerts from "../component/Alerts";
 
 
 class Secured extends Component {

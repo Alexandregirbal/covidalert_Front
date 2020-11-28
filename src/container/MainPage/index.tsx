@@ -1,7 +1,7 @@
 import { Container } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import Header from "../../component/header";
-import Secured from "../../Secured";
+import Secured from "../Secured";
 
 interface Props {}
 

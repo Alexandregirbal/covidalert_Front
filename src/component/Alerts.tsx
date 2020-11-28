@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getEmail } from "../getEmail";
-import httpCall, { httpCallWithoutStringify } from "../services/api/httpcall";
+import { getEmail } from "../services/keycloak/getEmail";
+import httpCall from "../services/api/httpcall";
 
 interface Props {
   keycloak: any;
